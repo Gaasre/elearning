@@ -1,0 +1,18 @@
+<nz-spin [nzSpinning]="loading" [nzDelay]="0">
+  <button class="modal-button facebook" nz-button nzType="primary" nzBlock><i nz-icon type="facebook"
+      theme="outline"></i> Continuer avec Facebook</button>
+  <button class="modal-button" nz-button nzType="default" nzBlock><i nz-icon type="google" theme="outline"></i>
+    Continuer avec Google</button>
+  <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+    <nz-input-group [nzPrefix]="prefixTemplate">
+      <input formControlName="email" class="modal-input" type="text" nz-input placeholder="E-mail" required>
+    </nz-input-group>
+    <nz-input-group [nzPrefix]="prefixTemplate">
+      <input formControlName="password" class="modal-input" type="password" nz-input placeholder="Mot de passe"
+        required>
+    </nz-input-group>
+    <ng-template #prefixTemplate><i style="font-size: 18px;margin-bottom: 10px;" nz-icon type="user"></i>
+    </ng-template>
+    <button class="modal-button" nz-button nzType="primary" nzBlock>Se connecter</button>
+  </form>
+</nz-spin>

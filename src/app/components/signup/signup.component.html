@@ -1,0 +1,21 @@
+<nz-spin [nzSpinning]="loading" [nzDelay]="0">
+  <form [formGroup]="signupForm" (ngSubmit)="submitSignup()">
+    <nz-input-group [nzPrefix]="prefixTemplate">
+      <input formControlName="name" class="modal-input" type="text" nz-input placeholder="Prénom et Nom" required>
+    </nz-input-group>
+    <nz-input-group [nzPrefix]="prefixTemplate">
+      <input formControlName="age" class="modal-input" type="number" nz-input placeholder="Age" required>
+    </nz-input-group>
+    <nz-input-group [nzPrefix]="prefixTemplate">
+      <input formControlName="email" class="modal-input" type="text" nz-input placeholder="E-mail" required>
+    </nz-input-group>
+    <nz-input-group [nzPrefix]="prefixTemplate">
+      <input formControlName="password" class="modal-input" type="password" nz-input placeholder="Mot de passe"
+        required>
+    </nz-input-group>
+    <ng-template #prefixTemplate><i style="font-size: 18px;margin-bottom: 10px;" nz-icon type="user"></i>
+    </ng-template>
+    <button class="modal-button" nz-button nzType="primary" [disabled]="signupForm.invalid" nzBlock>S'inscrire</button>
+  </form>
+  <p style="font-size: 10px;text-align: center;">En vous inscrivant, vous acceptez nos conditions générales d'utilisation et notre politique de confidentialité.</p>
+</nz-spin>

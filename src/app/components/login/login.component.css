@@ -1,0 +1,22 @@
+.modal-input {
+  font-size: 18px;
+  height: auto;
+  padding: 11px 45px 12px 40px !important;
+  margin-bottom: 10px
+}
+
+.modal-button {
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  margin-bottom: 10px;
+}
+
+.facebook {
+  background-color: #1A538A;
+  border-color: #1A538A;
+}
+
+.facebook:hover, .facebook:focus {
+  background-color: #164675;
+}

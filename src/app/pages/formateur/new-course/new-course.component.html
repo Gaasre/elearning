@@ -1,0 +1,80 @@
+<nz-layout style="height: 100vh">
+  <nz-sider [nzWidth]="300" [nzBreakpoint]="'md'" style="background: #fff">
+    <app-sidenav page='cours'></app-sidenav>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="padding: 0">
+      <app-topnav page="formateur"></app-topnav>
+    </nz-header>
+    <nz-content style="background:#fff; padding: 30px; position: relative">
+      <nz-steps [nzCurrent]="step" nzProgressDot>
+        <nz-step nzTitle="Type" nzDescription="Type du cours"></nz-step>
+        <nz-step nzTitle="Titre" nzDescription="Titre du cours"></nz-step>
+        <nz-step nzTitle="Catégorie" nzDescription="Catégorie du cours"></nz-step>
+      </nz-steps>
+      <div style="text-align: center; margin-top: 30px; height: 100%;">
+        <div *ngIf="step === 0">
+          <h2>Déterminons tout d'abord quel type de cours vous créez</h2>
+          <nz-radio-group [(ngModel)]="courseType">
+            <span style="min-height: 270px; width: 225px; padding: 15px; padding-top: 50px" nz-radio-button
+              nzValue="Cours">
+              <i style="font-size: 36px" nz-icon type="video-camera" nzTheme="outline"></i><br>
+              <label style="font-weight:bold">Cours</label>
+              <p style="line-height: 1.35135">Créez des expériences d'apprentissage exceptionnelles grâce à des sessions
+                vidéo, des quiz, des
+                exercices de codage, etc.</p>
+            </span>
+            <span style="min-height: 270px; width: 225px; padding: 15px; padding-top: 50px; bottom: 18.5px;"
+              nz-radio-button nzValue="Exercice">
+              <i style="font-size: 36px" nz-icon type="profile" nzTheme="outline"></i><br>
+              <label style="font-weight:bold">Exercice</label>
+              <p style="line-height: 1.35135">Aidez les participants à se préparer aux examens de certification en leur
+                fournissant des questions de
+                pratique.</p>
+            </span>
+          </nz-radio-group>
+        </div>
+        <div *ngIf="step === 1">
+          <h2>Pourquoi ne pas mettre un titre provisoire ?</h2>
+          <p style="margin-bottom: 40px">Si vous ne parvenez pas à trouver un titre accrocheur maintenant, aucun
+            problème : vous pouvez le modifier plus tard.</p>
+
+          <div style="width: 50%; margin: auto">
+            <nz-input-group [nzSuffix]="Title">
+              <input style="height: 50px; font-size: 18px;" type="text" [(ngModel)]="courseTitle" nz-input
+                placeholder="Saisir un nom pour votre cours" />
+            </nz-input-group>
+            <ng-template #Title>
+              <label style="background: #f0f2f5; padding: 5px;">{{60 - courseTitle.length}}</label>
+            </ng-template>
+          </div>
+        </div>
+        <div *ngIf="step === 2">
+          <h2>Quelle catégorie correspond le mieux aux connaissances que vous souhaitez partager ?</h2>
+          <p style="margin-bottom: 40px">Si vous n'êtes pas sûr d'avoir indiqué la catégorie la plus appropriée, vous
+            pouvez la modifier plus tard.</p>
+          <nz-select style="width: 50%; margin: auto" [(ngModel)]="courseCategory" nzAllowClear
+            nzPlaceHolder="Choisir la category du cours">
+            <nz-option nzValue="Développement" nzLabel="Développement"></nz-option>
+            <nz-option nzValue="Business" nzLabel="Business"></nz-option>
+            <nz-option nzValue="Design" nzLabel="Design"></nz-option>
+            <nz-option nzValue="Marketing" nzLabel="Marketing"></nz-option>
+            <nz-option nzValue="Photographie" nzLabel="Photographie"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div style="position: absolute; bottom: 10px; left: 20px">
+        <button *ngIf="step > 0" (click)="previousStep()" nz-button nzType="default"><i nz-icon type="left"></i>
+          Precedent</button>
+        <button routerLink="/formateur" *ngIf="step === 0" nz-button nzType="default"> Annuler</button>
+      </div>
+      <div style="position: absolute; bottom: 10px; right: 20px">
+        <button [disabled]="!canGoNext()" (click)="nextStep()" nz-button
+          nzType="primary">{{step !== 2 ? 'Continuer' : 'Terminer'}} <i nz-icon type="right"></i></button>
+      </div>
+    </nz-content>
+    <nz-footer>
+      <app-footer></app-footer>
+    </nz-footer>
+  </nz-layout>
+</nz-layout>

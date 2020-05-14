@@ -1,0 +1,57 @@
+<nz-layout>
+  <app-topnav></app-topnav>
+  <nz-content>
+    <div class="background">
+      <div class="presentation">
+        <h1>Lorem ipsum dolor sit amet</h1>
+        <p>
+          Ut in lorem quis dolor facilisis placerat. Fusce gravida felis sed imperdiet vulputate. Nulla placerat, nibh eu dignissim maximus.
+        </p>
+        <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Que souhaitez-vous apprendre ?">
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <i nz-icon type="search"></i>
+          </ng-template>
+      </div>  
+    </div>
+    <div class="courses">
+        <nz-tabset>
+            <nz-tab *ngFor="let item of categories" [nzTitle]="item.name">
+                <div nz-row [nzGutter]="16">
+                    <div nz-col *ngFor="let course of item.courses" [nzXl]="4" [nzLg]="6" [nzMd]="8" [nzSm]="12" [nzXs]="24" >
+                      <app-course [Course]="course"></app-course>
+                    </div>
+                  </div>
+            </nz-tab>
+          </nz-tabset>
+    </div>
+    <div class="join" *ngIf="!isConnected">
+      <div nz-row>
+        <div nz-col [nzXs]="24" [nzMd]="12" style="border-right: 1px solid #DEDFE0;padding:30px">
+          <div class="infos">
+              <h2>Devenir formateur</h2>
+              <p>
+                Donec mattis bibendum lacus, eu dignissim tortor efficitur ac.
+              </p>
+              <button nz-button nzType="primary">Commencez votre enseignement</button>
+          </div>
+
+        </div>      
+        <div nz-col [nzXs]="24" [nzMd]="12" style="padding:30px">
+            <div class="infos">
+                <h2>Devenir étudiant</h2>
+                <p>
+                    Donec mattis bibendum lacus, eu dignissim tortor efficitur ac.
+                </p>
+                <button nz-button nzType="primary">Commencer votre formation</button>
+              </div>
+
+        </div>
+      </div>
+    </div>
+  </nz-content>
+  <nz-footer>
+    <app-footer></app-footer>
+  </nz-footer>
+</nz-layout>

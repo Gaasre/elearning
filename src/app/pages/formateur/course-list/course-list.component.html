@@ -1,0 +1,60 @@
+<nz-layout style="height: 100vh">
+  <nz-sider [nzWidth]="300" [nzBreakpoint]="'md'" style="background: #fff">
+    <app-sidenav page='cours'></app-sidenav>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="padding: 0">
+      <app-topnav page="formateur"></app-topnav>
+    </nz-header>
+    <nz-content style="background:#fff; padding: 30px">
+      <h1>Cours</h1>
+      <nz-divider></nz-divider>
+      <div nz-row style="margin-bottom: 20px">
+        <div nz-col nzSpan="8">
+          <nz-input-group [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Chercher un cours" />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <i nz-icon type="search"></i>
+          </ng-template>
+        </div>
+        <div nz-col nzSpan="4" nzOffset="12">
+          <button routerLink="/formateur/cours/new" style="margin-left: 20px" nz-button nzType="primary" nzSearch><i nz-icon type="plus"></i> Nouveau
+            cours</button>
+        </div>
+      </div>
+      <nz-table #Table [nzData]="courseData">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Statut</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of Table.data">
+              <td>
+                <nz-avatar nzIcon="user" style="margin-right: 10px"></nz-avatar>
+                {{data.name}}
+              </td>
+              <td *ngIf="data.statut === true">
+                  <nz-tag [nzColor]="'green'">Actif</nz-tag>
+              </td>
+              <td *ngIf="data.statut === false">
+                  <nz-tag [nzColor]="'red'">Inactif</nz-tag>
+              </td>
+              <td>
+                <a [routerLink]="'/formateur/cours/edit/' + data._id"><i nz-icon type="edit" nzTheme="outline"></i></a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="deleteCourse(data._id)"><i nz-icon type="delete" nzTheme="outline"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+
+    </nz-content>
+    <nz-footer>
+      <app-footer></app-footer>
+    </nz-footer>
+  </nz-layout>
+</nz-layout>

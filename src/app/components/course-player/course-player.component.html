@@ -1,0 +1,63 @@
+<div nz-row>
+
+  <div class="lecteur" nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="16">
+    <video (loadeddata)="isLoaded()" (volumechange)="onVolumeUpdate($event)" (timeupdate)="onTimeUpdate($event)"
+      id="video1" height="100%" #video>
+      <source [src]="videoLink" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="controls">
+      <nz-slider [ngModel]="currentTime" [nzMax]="video.duration" [nzMin]="0" (ngModelChange)="changeLocation($event)">
+      </nz-slider>
+      <span style="float: left;">
+        <i (click)='fastRewind()' nz-icon nzTitle="Retour arrière de 5 s" nzPlacement="top" nz-tooltip class="control"
+          type="backward" nzTheme="outline"></i>
+        <i (click)='Play()' nz-icon class="control" [type]="isPlaying ? 'pause': 'caret-right'" nzTheme="outline"></i>
+        <i (click)='fastForward()' nz-icon nzTitle="Avance de 5 s" nzPlacement="top" nz-tooltip class="control"
+          type="forward" nzTheme="outline"></i>
+      </span>
+      <span (click)="Mute()" nz-popover [nzTitle]="null" [nzContent]="template" style="float: right;">
+        <svg class="control" *ngIf="!isMuted" nzTitle="Muter" nzPlacement="bottom" nz-tooltip
+          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M5 17h-5v-10h5v10zm2-10v10l9 5v-20l-9 5zm11.008 2.093c.742.743 1.2 1.77 1.198 2.903-.002 1.133-.462 2.158-1.205 2.9l1.219 1.223c1.057-1.053 1.712-2.511 1.715-4.121.002-1.611-.648-3.068-1.702-4.125l-1.225 1.22zm2.142-2.135c1.288 1.292 2.082 3.073 2.079 5.041s-.804 3.75-2.096 5.039l1.25 1.254c1.612-1.608 2.613-3.834 2.616-6.291.005-2.457-.986-4.681-2.595-6.293l-1.254 1.25z" />
+        </svg>
+        <svg class="control" *ngIf="isMuted" nzTitle="Demuter" nzPlacement="bottom" nz-tooltip
+          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22 1.269l-18.455 22.731-1.545-1.269 3.841-4.731h-1.827v-10h4.986v6.091l2.014-2.463v-3.628l5.365-2.981 4.076-5.019 1.545 1.269zm-10.986 15.926v.805l8.986 5v-16.873l-8.986 11.068z" />
+        </svg>
+      </span>
+      <ng-template #template>
+        <div style="height: 100px;">
+          <nz-slider (ngModelChange)="volumeUpdate($event)" nzVertical [nzMin]="0" [nzMax]="1" [nzStep]="0.01"
+            [ngModel]="volume"></nz-slider>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="navigateur" nz-col nzXs="24" nzSm="24" nzMd="24" nzLg="24" nzXl="8">
+    <ul nz-menu [nzMode]="'inline'">
+      <li nz-submenu *ngFor="let item of courseTree?.course.content ; index as x">
+        <span title>{{item.name}}</span>
+        <ul>
+          <li [nzSelected]="element.active" nz-menu-item *ngFor="let element of item.elements ; index as y">
+            <i (click)="selectElement(element)" nz-icon style="margin-right: 20px;" type="play-circle"
+              nzTheme="outline"></i>
+            <label (ngModelChange)="changeProgression($event, (item.elements.length * x) + y + 1)"
+              [ngModel]="inProgression((item.elements.length * x) + y + 1)" nz-checkbox>{{element.name}}</label>
+              <nz-dropdown [nzPlacement]="'bottomRight'" *ngIf="element.documents.length > 0" style="float: right;" [nzTrigger]="'click'">
+                <a nz-dropdown><i nz-icon type="file-pdf" style="font-size: 22px"></i> </a>
+                <ul nz-menu>
+                  <li *ngFor="let doc of element.documents" nz-menu-item>
+                    <a (click)="saveFile(doc.name)"><i nz-icon type="download" nzTheme="outline"></i> {{doc.name}}</a>
+                  </li>
+                </ul>
+              </nz-dropdown>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

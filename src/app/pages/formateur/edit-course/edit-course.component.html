@@ -1,0 +1,357 @@
+<nz-layout style="height: 100vh">
+  <nz-sider [nzWidth]="300" [nzBreakpoint]="'md'" style="background: #fff">
+    <app-sidenav page='cours'></app-sidenav>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="padding: 0">
+      <app-topnav page="formateur"></app-topnav>
+    </nz-header>
+    <nz-content style="background:#fff; position: relative">
+      <nz-layout style="height: 100%">
+        <nz-sider [nzWidth]="100" style="background: #fff">
+          <ul [nzInlineCollapsed]="true" nz-menu [nzMode]="'inline'" style="height:100%;">
+            <li routerLink="/formateur" style="margin-top: 50px" nz-menu-item><i nz-icon type="left"
+                nzTheme="outline"></i></li>
+            <li (click)="selected = 'acceuil'" [nzSelected]="selected === 'acceuil'" nz-menu-item><i nz-icon
+                type="solution" nzTheme="outline"></i></li>
+            <li (click)="selected = 'structure'" [nzSelected]="selected === 'structure'" nz-menu-item><i nz-icon
+                type="ordered-list" nzTheme="outline"></i></li>
+            <li (click)="selected = 'price'" [nzSelected]="selected === 'price'" nz-menu-item><i nz-icon type="dollar"
+                nzTheme="outline"></i></li>
+          </ul>
+        </nz-sider>
+        <nz-layout style="background: #fff">
+          <nz-content style="background:#fff; padding: 30px; position: relative">
+            <div style="position: relative; height: 100%" *ngIf="selected === 'acceuil'">
+              <span style="font-size: large; font-weight: bold;">
+                <label>Page d'acceuil du cours</label>
+              </span>
+              <span style="position: relative; float: right;">
+                <nz-switch [(ngModel)]="course.statut" (ngModelChange)="onInputChange()"></nz-switch>
+                <nz-tag style="margin-left: 10px" [nzColor]="course.statut ? 'green' : 'red'">
+                  {{course.statut ? 'Actif' : 'Inactif'}}</nz-tag>
+              </span>
+              <nz-divider></nz-divider>
+              <div nz-form>
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="24" nzFor="name">Titre du cours</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <nz-input-group [nzSuffix]="Name">
+                      <input (ngModelChange)="onInputChange()" nz-input [(ngModel)]="course.name" type="text" id="name">
+                    </nz-input-group>
+                    <ng-template #Name>
+                      <label style="background: #f0f2f5; padding: 5px;">{{60 - course.name.length}}</label>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="24" nzFor="short_desc">Description courte</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <nz-input-group [nzSuffix]="Short_Desc">
+                      <input (ngModelChange)="onInputChange()" [(ngModel)]="course.short_desc" nz-input id="short_desc">
+                    </nz-input-group>
+                    <ng-template #Short_Desc>
+                      <label style="background: #f0f2f5; padding: 5px;">{{120 - course.short_desc.length}}</label>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="24" nzFor="description">Description complete</nz-form-label>
+                  <nz-form-control [nzSpan]="24">
+                    <textarea (ngModelChange)="onInputChange()" nz-input [(ngModel)]="course.description" rows="3"
+                      id="description"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <label style="color: rgba(0, 0, 0, 0.85)">Pré-requis</label>
+              <nz-list style="margin-top: 5px;" [nzDataSource]="course.requirements" nzBordered nzSize="small"
+                [nzRenderItem]="item">
+                <ng-template #item let-item>
+                  <nz-list-item [nzContent]="item"></nz-list-item>
+                </ng-template>
+              </nz-list>
+              <div style="padding: 20px; border: 1px solid #CACBCC; margin-top: 10px;position: relative;
+                  height: 120px;" *ngIf="newRequirement">
+                <div nz-row>
+                  <div nz-col nzSpan="6">
+                    <label style="font-weight: bold">Nouveau pré-requis </label>
+                  </div>
+                  <div nz-col nzSpan="18">
+                    <input placeholder="Entrez le pré-requis" nz-input [(ngModel)]="newRequirementName" />
+                  </div>
+                </div>
+                <div style="position: absolute;
+                    right: 10px;
+                    bottom: 10px;">
+                  <a style="font-weight: bold" (click)="newRequirement = false">Annuler</a>
+                  <button (click)="addRequirement()" style="margin-left: 20px" nzType="primary"
+                    nz-button>Valider</button>
+                </div>
+              </div>
+              <div style="width: 100%; margin-top: 10px" class="on-hover">
+                <a (click)="newRequirement = true"><i style="font-size: 16px" nz-icon type="plus-square"
+                    nzTheme="outline"></i></a>
+              </div>
+              <div style="position: relative; float: right; margin-top: 20px; margin-bottom: 20px">
+                <button [disabled]="!hasCourseChanged" (click)="updateCourse()" nz-button
+                  nzType="primary">Sauvegarder</button>
+              </div>
+            </div>
+            <div *ngIf="selected === 'structure'">
+              <span style="font-size: large; font-weight: bold;">
+                <label>Structure du cours</label>
+              </span>
+              <nz-divider></nz-divider>
+              <nz-collapse>
+                <nz-collapse-panel *ngFor="let section of course.content" [nzHeader]="headerTpl">
+                  <ng-template #headerTpl>
+                    <span *ngIf="!section.isEdit">
+                      {{section.name}}
+                    </span>
+                    <span *ngIf="section.isEdit">
+                      <input style="width: 300px" nz-input [(ngModel)]="section.name" />
+                    </span>
+                    <span *ngIf="!section.isEdit" style="float: right;padding-right: 10px">
+                      <a (click)="section.isEdit = true"><i nz-icon type="edit"></i></a>
+                      <a style="margin-left: 10px" (click)="deleteSection(section)"><i nz-icon type="delete"></i></a>
+                    </span>
+                    <span *ngIf="section.isEdit" style="float: right;padding-right: 10px">
+                      <a (click)="updateSection(section)"><i nz-icon type="check"></i></a>
+                    </span>
+                  </ng-template>
+                  <nz-table #Table [nzShowPagination]="false" [nzSize]="'small'" [nzData]="section.elements">
+                    <thead>
+                      <tr>
+                        <th [nzWidth]="'75%'">Session</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-template ngFor let-item [ngForOf]="Table.data">
+                        <tr>
+                          <td *ngIf="!item.isEdit">
+                            <span>{{item.name}}</span>
+                            <span style="margin-left: 20px" class="on-hover">
+                              <a (click)="item.isEdit = true"><i nz-icon type="edit"></i></a>
+                              <nz-divider nzType="vertical"></nz-divider>
+                              <a (click)="deleteItem(item, section)"><i nz-icon type="delete"></i></a>
+                            </span>
+                          </td>
+                          <td *ngIf="item.isEdit">
+                            <input style="width: 60%" nz-input [(ngModel)]="item.name" />
+                            <span style="margin-left: 20px" class="on-hover">
+                              <a (click)="updateSession(item, section)"><i nz-icon type="check"></i></a>
+                            </span>
+                          </td>
+                          <td>
+                            <button style="margin-right: 5px" (click)="item.isExpanded = !item.isExpanded" nz-button
+                              nzType="default"><i nz-icon type="video-camera" nzTheme="outline"></i></button>
+                              <button (click)="item.isDocExpanded = !item.isDocExpanded"
+                              nz-button nzType="default"><i nz-icon type="file-pdf" nzTheme="outline"></i></button>
+                          </td>
+                        </tr>
+
+                        <tr [nzExpand]="item.isDocExpanded">
+                          <td style="margin: 15px" colspan="4">
+                            <table>
+                              <tr *ngIf="item.documents.length > 0">
+                                <th>Nom du fichier</th>
+                                <th>Type</th>
+                                <th>État</th>
+                                <th></th>
+                              </tr>
+                              <tr *ngFor="let doc of item.documents">
+                                <td>{{doc.name}}</td>
+                                <td>Document</td>
+                                <td>
+                                  <nz-tag *ngIf="doc.progress === 100" [nzColor]="'#87d068'">Succès</nz-tag>
+                                  <nz-progress *ngIf="doc.progress !== 100" [nzPercent]="doc.progress" nzSize="small">
+                                  </nz-progress>
+                                </td>
+                                <td><a (click)="deleteDocument(item, section, doc._id)"><i nz-icon type="close"
+                                      nzTheme="outline"></i></a></td>
+                              </tr>
+                              <tr style="padding: 15px">
+                                <input (change)="onDocumentChange($event, item, section)" style="display:none"
+                                  type="file" #documentInput />
+                                <h2>Télécharger Document</h2>
+                                <input disabled style="width: 60%; margin-right: 5px" type="text" nz-input />
+                                <button style="width: 30%" nz-button nzType="default"
+                                  (click)="documentInput.click()">Selectionner un
+                                  document</button>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+
+
+
+                        <tr [nzExpand]="item.isExpanded">
+                          <td *ngIf="file || item.video" style="margin: 15px" colspan="2">
+                            <table>
+                              <tr>
+                                <th>Nom du fichier</th>
+                                <th>Type</th>
+                                <th>État</th>
+                                <th></th>
+                              </tr>
+                              <tr>
+                                <td>{{item.video}}</td>
+                                <td>Video</td>
+                                <td>
+                                  <nz-tag *ngIf="progress === 100 || item.video" [nzColor]="'#87d068'">Succès</nz-tag>
+                                  <nz-progress *ngIf="progress !== 100 && !item.video" [nzPercent]="progress"
+                                    nzSize="small"></nz-progress>
+                                </td>
+                                <td><a (click)="deleteUpload(item, section)"><i nz-icon type="close"
+                                      nzTheme="outline"></i></a></td>
+                              </tr>
+                            </table>
+                          </td>
+                          <td *ngIf="!file && !item.video" style="padding: 15px" colspan="3">
+                            <input (change)="onFileChange($event, item, section)" style="display:none" type="file"
+                              #fileInput />
+                            <h2>Télécharger Vidéo</h2>
+                            <input disabled style="width: 60%; margin-right: 5px" type="text" nz-input />
+                            <button style="width: 30%" nz-button nzType="default"
+                              (click)="fileInput.click()">Selectionner une
+                              video</button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </nz-table>
+                  <!--<nz-list [nzDataSource]="section.elements" [nzRenderItem]="item">
+                    <ng-template #item let-item>
+                      <nz-list-item [nzContent]="item.isEdit ? editBlock : itemBlock"
+                        [nzActions]="!item.isEdit ? [newAction, editAction, deleteAction] : [confirmAction]">
+                      </nz-list-item>
+                      <ng-template #itemBlock>
+                        <div>{{item.name}}</div>
+                        <br>
+                        <div style="width: 100%">
+                          <table>
+                            <tr>
+                              <th>Nom du fichier</th>
+                              <th>Type</th>
+                              <th>État</th>
+                              <th></th>
+                            </tr>
+                            <tr>
+                              <td>{{item.video}}</td>
+                              <td>Video</td>
+                              <td>Echec</td>
+                              <td><i nz-icon type="plus" nzTheme="outline"></i></td>
+                            </tr>
+                          </table>
+                        </div>
+                      </ng-template>
+                      <ng-template #editBlock>
+                        <input style="width: 300px" nz-input [(ngModel)]="item.name" />
+                      </ng-template>
+                      <ng-template #editAction><a (click)="item.isEdit = true"><i nz-icon type="edit"></i></a>
+                      </ng-template>
+                      <ng-template #newAction>
+                        <button nz-button nzType="default"><i nz-icon type="plus" nzTheme="outline"></i>
+                          Contenu</button>
+                      </ng-template>
+                      <ng-template #deleteAction><a (click)="deleteItem(item)"><i nz-icon type="delete"></i></a>
+                      </ng-template>
+                      <ng-template #confirmAction><a (click)="updateSession(item)"><i nz-icon type="check"></i></a>
+                      </ng-template>
+                    </ng-template>
+                  </nz-list>-->
+                  <div style="padding: 20px; border: 1px solid #CACBCC; margin-top: 10px;position: relative;
+                  height: 120px;" *ngIf="section.newItem">
+                    <div nz-row>
+                      <div nz-col nzSpan="6">
+                        <label style="font-weight: bold">Nouvelle session : </label>
+                      </div>
+                      <div nz-col nzSpan="18">
+                        <nz-input-group [nzSuffix]="SessionLength">
+                          <input placeholder="Entrer un titre" nz-input [(ngModel)]="newItemName" />
+                        </nz-input-group>
+                        <ng-template #SessionLength>
+                          <label style="background: #f0f2f5; padding: 5px;">{{60 - newItemName.length}}</label>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <div style="position: absolute;
+                    right: 10px;
+                    bottom: 10px;">
+                      <a style="font-weight: bold" (click)="sectionnewItem = false">Annuler</a>
+                      <button (click)="addItem(section)" style="margin-left: 20px" nzType="primary"
+                        nz-button>Valider</button>
+                    </div>
+                  </div>
+                  <div style="width: 100%; margin-top: 10px" class="on-hover">
+                    <a (click)="section.newItem = true"><i style="font-size: 16px" nz-icon type="plus-square"
+                        nzTheme="outline"></i></a>
+                  </div>
+                </nz-collapse-panel>
+              </nz-collapse>
+              <div style="padding: 20px; border: 1px solid #CACBCC; margin-top: 30px;position: relative;
+              height: 120px;" *ngIf="newSection">
+                <div nz-row>
+                  <div nz-col nzSpan="6">
+                    <label style="font-weight: bold">Nouvelle rubrique : </label>
+                  </div>
+                  <div nz-col nzSpan="18">
+                    <nz-input-group [nzSuffix]="TitreLength">
+                      <input placeholder="Entrer un titre" nz-input [(ngModel)]="newSectionName" />
+                    </nz-input-group>
+                    <ng-template #TitreLength>
+                      <label style="background: #f0f2f5; padding: 5px;">{{60 - newSectionName.length}}</label>
+                    </ng-template>
+                  </div>
+                </div>
+                <div style="position: absolute;
+                right: 10px;
+                bottom: 10px;">
+                  <a style="font-weight: bold" (click)="newSection = false">Annuler</a>
+                  <button (click)="addSection()" style="margin-left: 20px" nzType="primary" nz-button>Valider</button>
+                </div>
+              </div>
+              <div style="width: 100%; margin-top: 20px" class="on-hover">
+                <a (click)="newSection = true"><i style="font-size: 26px" nz-icon type="plus-square"
+                    nzTheme="outline"></i></a>
+              </div>
+            </div>
+
+            <div *ngIf="selected === 'price'">
+              <span style="font-size: large; font-weight: bold;">
+                <label>Prix du cours</label>
+              </span>
+              <nz-divider></nz-divider>
+              <nz-alert nzType="info"
+                nzMessage="Choisissez un niveau de tarif pour votre cours ci-dessous et cliquez sur « Enregistrer ».">
+              </nz-alert>
+              <div style="margin-top: 20px">
+                <nz-select (ngModelChange)="onInputChange()" style="width: 120px; margin-right: 20px"
+                  [(ngModel)]="course.currency" nzPlaceHolder="Currency">
+                  <nz-option nzValue="USD" nzLabel="USD"></nz-option>
+                  <nz-option nzValue="EUR" nzLabel="EUR"></nz-option>
+                  <nz-option nzValue="DH" nzLabel="DH"></nz-option>
+                </nz-select>
+                <nz-select (ngModelChange)="onInputChange()" style="width: 120px; margin-right: 20px"
+                  [(ngModel)]="course.price" nzPlaceHolder="Prix">
+                  <nz-option nzValue="Gratuit" nzLabel="Gratuit"></nz-option>
+                  <nz-option nzValue="10,99" nzLabel="10,99"></nz-option>
+                  <nz-option nzValue="20,99" nzLabel="20,99"></nz-option>
+                  <nz-option nzValue="30,99" nzLabel="30,99"></nz-option>
+                  <nz-option nzValue="40,99" nzLabel="40,99"></nz-option>
+                  <nz-option nzValue="50,99" nzLabel="50,99"></nz-option>
+                </nz-select>
+                <button [disabled]="!hasCourseChanged" style="width: 120px" (click)="updateCourse()" nz-button
+                  nzType="primary">Sauvegarder</button>
+              </div>
+            </div>
+          </nz-content>
+        </nz-layout>
+      </nz-layout>
+    </nz-content>
+    <nz-footer>
+      <app-footer></app-footer>
+    </nz-footer>
+  </nz-layout>
+</nz-layout>

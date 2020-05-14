@@ -1,0 +1,67 @@
+<nz-layout style="height: 100vh">
+  <nz-sider [nzWidth]="300" [nzBreakpoint]="'md'" style="background: #fff">
+    <app-sidenav page='profil'></app-sidenav>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="padding: 0">
+      <app-topnav page="formateur"></app-topnav>
+    </nz-header>
+    <nz-content style="background:#fff; padding: 30px">
+      <h1>Profil et paramètres</h1>
+      <nz-divider></nz-divider>
+      <div nz-form style="position: relative">
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="10">
+            <nz-form-item>
+              <nz-form-label nzFor="name">Nom complet</nz-form-label>
+              <nz-form-control>
+                <input (ngModelChange)="onInputChange()" [(ngModel)]="user.name" nz-input id="name">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="function">Fonction</nz-form-label>
+              <nz-form-control>
+                <input (ngModelChange)="onInputChange()" placeholder="Ex: Ingénieur/Architecte ..." [(ngModel)]="user.function" nz-input id="function">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="about">Biographie</nz-form-label>
+              <nz-form-control>
+                <textarea (ngModelChange)="onInputChange()" [(ngModel)]="user.about" rows="2" nz-input id="about"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="10">
+            <nz-form-item>
+              <nz-form-label nzFor="email">E-mail</nz-form-label>
+              <nz-form-control>
+                <input (ngModelChange)="onInputChange()" [(ngModel)]="user.email" nz-input id="email">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="website">Site Web</nz-form-label>
+              <nz-form-control>
+                <input (ngModelChange)="onInputChange()" placeholder="Url" [(ngModel)]="user.website" nz-input id="website">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="linkedin">LinkedIn</nz-form-label>
+              <nz-form-control>
+                <nz-input-group nzAddOnBefore="Http://www.linkedin.com/">
+                  <input (ngModelChange)="onInputChange()" placeholder="ID ressource" [(ngModel)]="user.linkedin" nz-input id="linkedin">
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div style="position: relative; float: right; margin-top: 20px; margin-bottom: 20px">
+            <button [disabled]="!hasUserChanged" (click)="updateUser()" nz-button
+              nzType="primary">Sauvegarder</button>
+          </div>
+      </div>
+    </nz-content>
+    <nz-footer>
+      <app-footer></app-footer>
+    </nz-footer>
+  </nz-layout>
+</nz-layout>

@@ -1,0 +1,72 @@
+<nz-header>
+  <div routerLink="/" class="logo"></div>
+  <ul nz-menu [nzTheme]="'light'" [nzMode]="'horizontal'" style="line-height: 64px;">
+    <li *ngIf="page !== 'formateur'" nz-submenu>
+      <span title><i nz-icon type="bars" theme="outline"></i> Catégories</span>
+      <ul>
+        <li nz-menu-item><i nz-icon type="shopping" theme="outline"></i> Marketing</li>
+        <li nz-menu-item><i nz-icon type="desktop" theme="outline"></i> Développement</li>
+        <li nz-menu-item><i nz-icon type="bar-chart" theme="outline"></i> Business</li>
+        <li nz-menu-item><i nz-icon type="sound" theme="outline"></i> Musique</li>
+        <li nz-menu-item><i nz-icon type="instagram" theme="outline"></i> Photographie</li>
+      </ul>
+    </li>
+    <div class="connect" *ngIf="!userConnected" style="float: right">
+      <button nz-button (click)="openSignup(tplTitle_Signup, tplContent_Signup)" nzType="default">S'inscrire</button>
+      <button nz-button (click)="openLogin(tplTitle_Login, tplContent_Login)" nzType="primary">Se connecter</button>
+    </div>
+    <div class="connected" *ngIf="userConnected" style="float: right">
+      <button routerLink="/formateur" nz-button nzType="default"> Vue formateur</button>
+      <nz-dropdown [nzTrigger]="'click'" [nzPlacement]="'bottomRight'">
+        <button nz-dropdown nz-button nzType="default"> Mes cours</button>
+        <ul nz-menu>
+          <li [routerLink]="'/learn/' + item.course._id" style="display: flex; padding: 10px;"
+            *ngFor="let item of userConnected.courses" nz-menu-item>
+            <img style="position: relative" height="50" width="80" src="../../../assets/javascript.jpg">
+            <div style="margin-left: 16px; flex: 1px">
+              <a>{{item.course?.name}}</a>
+              <p style="color: #686F7A; font-size: 13px; overflow: hidden; text-overflow: ellipsis;max-width: 300px;">
+                {{item.course?.short_desc}}</p>
+              <nz-progress nzStrokeLinecap="round" [nzPercent]="item.progression.length/getTotal(item.course) * 100">
+              </nz-progress>
+            </div>
+          </li>
+        </ul>
+      </nz-dropdown>
+      <button style="margin-left: 20px" nzSize='large' nzShape="circle" nz-button nzType="default"><i nz-icon
+          type="bell" theme="outline"></i></button>
+      <nz-dropdown [nzPlacement]="'bottomRight'">
+        <button nz-dropdown style="margin-left: 20px; border-radius: 30px" nzSize='large' nz-button
+          nzType="default">{{userConnected.name}} <i style="font-size: 18px" nz-icon type="user"
+            theme="outline"></i></button>
+        <ul nz-menu>
+          <li [routerLink]="'/formateur/profil'" nz-menu-item>
+            <a style="color: #29303B;font-size: 15px;font-weight: 400;">{{userConnected?.name}}</a>
+            <a style="font-size: 13px;color: #686F7A;">{{userConnected?.email}}</a>
+          </li>
+          <li nz-menu-item>
+            <a>Historique d'achats</a>
+          </li>
+          <li nz-menu-divider></li>
+          <li nz-menu-item>
+            <a (click)="Disconnect()">Se déconnecter</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+    </div>
+  </ul>
+</nz-header>
+
+<ng-template #tplTitle_Login>
+  <span>Connectez-vous à votre compte !</span>
+</ng-template>
+<ng-template #tplContent_Login>
+  <app-login [template]="tplModal_Login"></app-login>
+</ng-template>
+
+<ng-template #tplTitle_Signup>
+  <span>Inscrivez-vous et commencez à apprendre !</span>
+</ng-template>
+<ng-template #tplContent_Signup>
+  <app-signup [template]="tplModal_Signup"></app-signup>
+</ng-template>

@@ -1,0 +1,19 @@
+<div [routerLink]="'/course/' + Course._id" class="container">
+  <div class="image">
+    <img src="../../../assets/javascript.jpg">
+  </div>
+  <div class="top">
+    <div class="name">
+      {{Course.name}}
+    </div>
+    <div class="author">
+      {{Course.author.name}}
+    </div>
+    <div class="stars">
+      <nz-rate [ngModel]="Course.rate" nzDisabled nzAllowHalf></nz-rate> {{Course.rate}}
+    </div>
+    <div class="price">
+      <span class="promo">{{Course.price}} {{Course.currency}}</span>
+    </div>
+  </div>
+</div>

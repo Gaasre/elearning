@@ -1,0 +1,90 @@
+<nz-layout>
+  <app-topnav></app-topnav>
+  <nz-content style="background: #fff">
+    <div nz-row class="overview">
+      <div nz-col nzSpan="16" class="informations">
+        <h1>{{course?.name}}</h1>
+        <p>{{course?.short_desc}}</p>
+        <div style="font-size: 15px">
+          <nz-rate [ngModel]="course?.rate" nzDisabled></nz-rate>
+          <span style="margin-right: 20px">{{course?.rate}} ({{course?.notes}} notes)</span>
+          <span>{{course?.enrolled}} participants inscrits</span>
+        </div>
+        <div style="font-size: 15px">
+          Créé par {{course?.author.name}}
+        </div>
+        <div style="font-size: 15px; margin-top:30px;">
+          <span style="margin-right: 20px"><i nz-icon type="sound"></i> {{course?.voice}}</span>
+          <span><i nz-icon type="message"></i> {{course?.subtitles}}</span>
+        </div>
+      </div>
+      <div nz-col nzSpan="8" class="thumbnail">
+        <div class="content"></div>
+        <span style="font-size: 36px;color: #505763;font-weight: 700;margin-top: 5px">{{course?.price}} {{course?.currency}}</span>
+        <div>
+          <button *ngIf="!isEnrolled" (click)="Enroll()" style="width: 70%; border-radius: 0px; margin: auto; margin-top: 10px" nz-button [nzSize]="'large'" nzType="primary">Acheter
+            maintenant</button>
+        </div>
+        <div *ngIf="!isConnected()" style="color: #A1A7B3;font-weight: 700;margin-top: 5px">
+          Connectez vous pour pouvoir y acceder
+        </div>
+      </div>
+    </div>
+    <div class="general-container">
+      <div class="description">
+        <h2>Description</h2>
+        <p>{{course?.description}}</p>
+      </div>
+
+      <div class="prerequis">
+        <h2>Prérequis</h2>
+        <ul>
+          <li *ngFor="let item of course?.requirements">{{item}}</li>
+        </ul>
+      </div>
+      <div class="course-tree">
+        <h2>Contenu du cours</h2>
+        <div class="collapse_container" *ngFor="let item of course?.content">
+          <div (click)="item.active=!item.active" class="collapse">
+            <span style="font-weight: 500"><i style="margin-right: 10px;" nz-icon
+                [type]="item.active ? 'minus-square' : 'plus-square'" nzTheme="outline"></i> {{item.name}}</span>
+            <span style="float: right">{{item.duration}}</span>
+            <span style="float: right; margin-right: 15%;">{{item.elements.length}} sessions</span>
+          </div>
+          <div [className]="item.active ? 'content open' : 'content'">
+            <div class="element" *ngFor="let element of item.elements">
+              <span><i style="margin-right: 10px;" nz-icon
+                type="play-circle" nzTheme="outline"></i> {{element.name}}</span>
+              <span style="float: right">{{element.duration}}</span>
+            </div>
+           </div>
+        </div>
+
+      </div>
+      <div nz-row class="formateur">
+        <h2>À propos du formateur</h2>
+        <div nz-col nzSpan="8">
+          <div class="thumbnail"></div>
+          <div><b>4,6</b> Note du formateur</div>
+          <div><b>21 417</b> Participants</div>
+          <div><b>10</b> Cours</div>
+        </div>
+        <div nz-col nzSpan="16" class="about">
+          <h3 style="color: #57bab0; margin-bottom: 0px">{{course?.author.name}}</h3>
+          <b style="font-size: 12px">{{course?.author.function}}</b>
+          <p>{{course?.author.about}}</p>
+        </div>
+      </div>
+      <div class="rating"></div>
+      <div class="comments">
+        <div class="comment">
+          <div class="thumbnail"></div>
+          <div class="content"></div>
+        </div>
+      </div>
+    </div>
+  </nz-content>
+  <nz-footer>
+    <app-footer></app-footer>
+  </nz-footer>
+</nz-layout>

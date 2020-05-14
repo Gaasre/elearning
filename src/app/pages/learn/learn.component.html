@@ -1,0 +1,39 @@
+<nz-layout>
+    <app-topnav></app-topnav>
+    <nz-content style="background: #fff">
+
+        <div style="background-color: #29303B; padding: 50px">
+            <div style="width: 70%; color: #fff;margin-bottom: 30px;">
+                <h1 style="color: #fff">{{course?.course?.name}}</h1>
+                <div>Créé par {{author?.name}}</div>
+                <div>{{course?.progression.length}} sur {{total}} terminés</div>
+                <nz-progress [nzPercent]="course?.progression.length/total * 100" nzStrokeLinecap="round" [nzShowInfo]="false"></nz-progress>
+            </div>
+            <app-course-player [courseTree]="course"></app-course-player>
+        </div>
+
+        <div style="background-color: #fff; padding: 50px">
+            <nz-tabset>
+              <nz-tab nzTitle="Aperçu">
+                <h1>À propos de ce cours</h1>
+                <nz-divider nzText="Description"></nz-divider>
+                <p>
+                  {{course?.course?.description}}
+                </p>
+                <nz-divider nzText="Formateur"></nz-divider>
+                <h3>{{author?.name}}</h3>
+                <p>
+                  {{author?.about}}
+                </p>
+              </nz-tab>
+              <nz-tab nzTitle="Question/Reponse">
+                Content of Tab Pane 2
+              </nz-tab>
+            </nz-tabset>
+          </div>
+
+    </nz-content>
+    <nz-footer>
+        <app-footer></app-footer>
+    </nz-footer>
+</nz-layout>

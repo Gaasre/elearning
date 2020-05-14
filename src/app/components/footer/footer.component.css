@@ -1,0 +1,28 @@
+.background {
+    padding: 20px;
+}
+
+.background .logo-side {
+    color: #686F7A;
+    font-size: 13px;
+}
+
+.logo-side span {
+    float: left;
+}
+
+.background .links-side {
+    float: right;
+}
+
+.logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    background: rgba(192,192,192,.5);
+    margin-right: 10px;
+}
+
+.links-side a {
+    margin-right: 5px;
+}

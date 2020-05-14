@@ -1,0 +1,27 @@
+.logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(192,192,192,.5);
+    margin: 16px 24px 16px 0;
+    float: left;
+  }
+
+  nz-header button {
+      margin-left: 5px;
+  }
+
+
+  .ant-layout-header {
+      background: #fff;
+      height: auto;
+  }
+
+  .connected button{
+    border: none;
+    box-shadow: none;
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  }
+
+  .connected button:hover {
+    border: solid 1px #57bab0;
+  }
